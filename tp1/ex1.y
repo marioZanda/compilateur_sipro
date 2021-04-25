@@ -47,6 +47,7 @@
 
   #define FUNCTION_DEFINITION 				"function:definition"
   #define FUNCTION_DEFINITION_FIN			"function:definition:end"
+  #define FUNCTION_CALL_FIN			"function:call:end"
 
   #define VAR_GLOBAL			"var:global"
   #define VAR_GLOBAL_VAL 		"var:global:val"
@@ -97,7 +98,7 @@
 %precedence NON_ELSE
 %precedence ELSE
 
-%type <entier> expr NUMBER decl type largs largV sdecl sdeclV instr sinstrV sinstr lexpr lexprV blocinstr
+%type <entier> expr decl type  instr sinstrV sinstr lexpr lexprV blocinstr largs largV sdecl sdeclV NUMBER
 %type <chaine> ID
 
 %%
@@ -189,11 +190,15 @@ deffun :
 					free_first_symbol_table_entry();
 				}
 				printf(
+					"\tconst dx,"FUNCTION_CALL_FIN":%s\n"
+					"\tjmp dx\n"
 					"; Saut à la fin de l'exécution du code de %s()\n"
 					":function:definition:end:%s\n",
 				function_def->name,
+				function_def->name,
 				function_def->name);
 				function_def = NULL;
+
 			};
 
 /* ---- Langage de traitement de la liste des arguments d'une fonction ---- */
@@ -206,16 +211,16 @@ largs :
 // Cas d'argument unique
   type ID			{
 					// Vérification de l'unicité de l'identifiant de l'argument
-						symbol_table_entry* funArg = search_symbol_table($2);
-						if (funArg != NULL){
+						symbol_table_entry* function_arg = search_symbol_table($2);
+						if (function_arg != NULL){
 							fail_with("ID existe deja\n");
 						}
 
 					/* Ajout de l'identifiant de l'argument dans la
 					table des symboles */
-						funArg =  new_symbol_table_entry($2);
-						funArg->class = LOCAL_VARIABLE;
-						funArg->desc[0] = $1;
+						function_arg =  new_symbol_table_entry($2);
+						function_arg->class = LOCAL_VARIABLE;
+						function_arg->desc[0] = $1;
 
 					/* Mise à jour des informations de définition de
 					la fontion dans la table des symboles */
@@ -247,16 +252,16 @@ largs :
 // Dans une liste d'arguments
 | largs ',' type ID	{
 					// Vérification de l'unicité de l'identifiant de l'argument
-						symbol_table_entry* funArg = search_symbol_table($4);
-						if (funArg != NULL){
+						symbol_table_entry* function_arg = search_symbol_table($4);
+						if (function_arg != NULL){
 							fail_with("ID existe deja\n");
 						}
 
 					/* Ajout de l'identifiant de l'argument dans la
 					table des symboles */
-						funArg =  new_symbol_table_entry($4);
-						funArg->class = LOCAL_VARIABLE;
-						funArg->desc[0] = $3;
+						function_arg =  new_symbol_table_entry($4);
+						function_arg->class = LOCAL_VARIABLE;
+						function_arg->desc[0] = $3;
 
 					/* Mise à jour des informations de définition de
 					la fontion dans la table des symboles */
@@ -367,7 +372,7 @@ instr:
 
 | expr ';'			{
  					if ($1 != ERR){
- 						printf("\tpop\n");
+ 						//printf("\tpop\n");
  					}
  				}
 | ID '=' expr ';'		{
@@ -597,8 +602,8 @@ expr	 :
 							printf(
 								"; Saut à %s() pour exécution\n"
 								"\tconst dx,"FUNCTION_DEFINITION":%s\n"
-								"\tjmp dx\n\n"
-								":"FUNCTION_DEFINITION_FIN"%s",
+								"\tjmp dx\n"
+								":"FUNCTION_CALL_FIN":%s\n",
 							fun->name,
 							fun->name,
 							fun->name);
@@ -681,7 +686,7 @@ expr	 :
 							$$ = T_INT;
 						}
 
-| '(' expr ')'			{ $$ = $2; }
+//| '(' expr ')'			{ $$ = $2; }
 
 | expr EQ expr			{
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage

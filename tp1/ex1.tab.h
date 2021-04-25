@@ -83,7 +83,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 84 "ex1.y"
+#line 85 "ex1.y"
  int entier; char* chaine; 
 
 #line 90 "ex1.tab.h"

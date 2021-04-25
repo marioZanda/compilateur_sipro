@@ -85,7 +85,7 @@
   #define T_BOOL 2
   #define T_INT 3
 
-  #define PROGRAM_START			"program:debut"
+  #define PROGRAM_START			"debut:program"
 
   #define NEG_VRAI				"neg:vrai"
   #define NEG_FAUX				"neg:faux"
@@ -115,8 +115,9 @@
   #define SUP_EQ_VRAI 			"sup:eq:vrai"
   #define SUP_EQ_FAUX 			"sup:eq:faux"
 
-  #define FUN_DEF 				"fun:def"
-  #define FUN_DEF_FIN			"fun:def:fin"
+  #define FUNCTION_DEFINITION 				"function:definition"
+  #define FUNCTION_DEFINITION_FIN			"function:definition:end"
+  #define FUNCTION_CALL_FIN			"function:call:end"
 
   #define VAR_GLOBAL			"var:global"
   #define VAR_GLOBAL_VAL 		"var:global:val"
@@ -147,10 +148,10 @@
   static void create_label(char *buf, size_t buf_size, const char *format, ...);
   void fail_with(const char *format, ...);
 
-  symbol_table_entry* funDef = NULL;
+  symbol_table_entry* function_def = NULL;
 
 
-#line 154 "ex1.tab.c"
+#line 155 "ex1.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -556,18 +557,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  40
+#define YYFINAL  38
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   336
+#define YYLAST   302
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  36
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  23
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  67
+#define YYNRULES  66
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  118
+#define YYNSTATES  115
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   278
@@ -618,13 +619,13 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   105,   105,   106,   107,   108,   109,   110,   111,   115,
-     116,   117,   120,   134,   135,   136,   141,   159,   141,   201,
-     202,   207,   248,   292,   301,   302,   306,   307,   311,   312,
-     316,   317,   324,   325,   329,   330,   335,   337,   351,   368,
-     373,   388,   388,   401,   407,   411,   407,   426,   472,   534,
-     576,   610,   626,   641,   656,   673,   684,   686,   735,   784,
-     830,   883,   934,   950,  1001,  1047,  1056,  1065
+       0,   106,   106,   107,   108,   109,   110,   111,   112,   116,
+     117,   118,   121,   135,   136,   137,   142,   160,   142,   206,
+     207,   212,   253,   297,   306,   307,   311,   312,   316,   317,
+     321,   322,   329,   330,   334,   335,   340,   342,   356,   373,
+     378,   393,   393,   406,   412,   416,   412,   431,   477,   539,
+     581,   615,   631,   646,   661,   678,   691,   740,   789,   835,
+     888,   939,   955,  1006,  1052,  1061,  1070
 };
 #endif
 
@@ -669,7 +670,7 @@ static const yytype_int16 yytoknum[] =
 };
 #endif
 
-#define YYPACT_NINF (-37)
+#define YYPACT_NINF (-35)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -683,18 +684,18 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     117,    -7,   -37,    29,   -37,   -37,   -37,   -37,   -37,   -27,
-      -6,    -4,    29,    11,   -37,    29,    -1,    87,     3,    13,
-     -37,   -37,   -37,   -37,   133,   -37,     4,   -37,    29,    29,
-      29,   -37,   157,   -37,   181,   273,    22,   257,    -1,   -37,
-     -37,    15,   -37,    16,    18,   -37,   -28,    29,    29,    29,
-      29,    29,    29,    29,    29,    29,    29,    29,   -37,    29,
-       9,   286,   205,   286,    29,   -37,   -37,   -37,   -28,     8,
-     257,   -37,   -37,   -37,   -37,   -37,   -37,    29,    31,   309,
-      41,   297,    41,    41,    41,    41,   -10,   -10,   -37,   -37,
-     286,   -37,   -37,    32,   286,   -37,   -37,   229,    -1,   257,
-      39,   -37,    48,    42,    40,    56,   257,   -37,   -37,    -1,
-     -37,   -37,    43,    61,   257,   -37,   -37,   -37
+     111,   -11,   -35,    57,   -35,   -35,   -35,   -35,   -35,   -19,
+       1,    26,    57,     0,   -35,    13,    85,     3,     5,   -35,
+     -35,   -35,   -35,   127,   -35,    28,   -35,    57,    57,    57,
+     -35,   151,   -35,   175,    16,   251,    13,   -35,   -35,     4,
+     -35,    30,    31,   -35,   -29,    57,    57,    57,    57,    57,
+      57,    57,    57,    57,    57,    57,   -35,    57,    33,   267,
+     199,   267,    57,   -35,   -35,   -29,    34,   251,   -35,   -35,
+     -35,   -35,   -35,   -35,    57,    39,   275,    81,    15,    81,
+      81,    81,    81,   -12,   -12,   -35,   -35,   267,   -35,   -35,
+      41,   267,   -35,   -35,   223,    13,   251,    42,   -35,    61,
+      45,    47,    59,   251,   -35,   -35,    13,   -35,   -35,    49,
+      66,   251,   -35,   -35,   -35
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -702,34 +703,34 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,    55,     0,    65,    66,    13,    14,    15,    67,
-       0,     0,     0,     0,     8,     0,    24,     0,     0,     0,
-      11,    36,     9,    10,     0,     4,    67,    64,    34,     0,
-       0,    44,     0,    37,     0,     0,     0,    28,    25,    26,
-       1,     0,     6,     0,     0,     7,    16,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    39,    35,
-       0,    32,     0,    12,     0,    47,    38,    56,     0,     0,
-      29,    30,    27,     2,     5,     3,    49,     0,     0,    62,
-      57,    63,    59,    61,    58,    60,    51,    52,    53,    54,
-      33,    50,    40,     0,    45,    23,    31,     0,    19,     0,
-       0,    48,     0,     0,    20,    43,     0,    21,    17,     0,
-      41,    46,     0,     0,     0,    18,    22,    42
+       0,     0,    55,     0,    64,    65,    13,    14,    15,    66,
+       0,     0,     0,     0,     8,    24,     0,     0,     0,    11,
+      36,     9,    10,     0,     4,    66,    63,    34,     0,     0,
+      44,     0,    37,     0,     0,    28,    25,    26,     1,     0,
+       6,     0,     0,     7,    16,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    39,    35,     0,    32,
+       0,    12,     0,    47,    38,     0,     0,    29,    30,    27,
+       2,     5,     3,    49,     0,     0,    61,    56,    62,    58,
+      60,    57,    59,    51,    52,    53,    54,    33,    50,    40,
+       0,    45,    23,    31,     0,    19,     0,     0,    48,     0,
+       0,    20,    43,     0,    21,    17,     0,    41,    46,     0,
+       0,     0,    18,    22,    42
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -37,   -37,    59,   -37,   -16,   -37,   -37,   -37,   -37,   -37,
-     -33,   -37,   -37,   -37,   -37,   -37,   -37,   -36,   -37,   -37,
-     -37,   -11,     0
+     -35,   -35,    67,   -35,   -15,   -35,   -35,   -35,   -35,   -35,
+     -27,   -35,   -35,   -35,   -35,   -35,   -35,   -34,   -35,   -35,
+     -35,     7,    -1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    17,    18,    93,    19,    20,    78,   112,   103,   104,
-      21,    37,    38,    69,    70,    59,    60,    22,   114,    64,
-     100,    23,    24
+       0,    16,    17,    90,    18,    19,    75,   109,   100,   101,
+      20,    35,    36,    66,    67,    57,    58,    21,   111,    62,
+      97,    22,    23
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -737,62 +738,56 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      36,    71,    28,    27,    44,    39,    76,    77,    29,     6,
-       7,     8,    32,    34,     2,    35,    56,    57,     3,     4,
-       5,    25,    36,    30,    26,    31,    46,    72,    61,    62,
-      63,    45,     2,    28,    96,    68,     3,     4,     5,    91,
-      15,    95,    26,    73,    74,    33,    75,    79,    80,    81,
-      82,    83,    84,    85,    86,    87,    88,    89,    15,    90,
-      98,   107,    99,   105,    94,    54,    55,    56,    57,   106,
-     111,   109,   108,   110,   116,    16,    43,    97,   117,   115,
-       0,     0,   102,     0,     0,     0,     0,    40,    41,     0,
-       2,     0,     0,   113,     3,     4,     5,     6,     7,     8,
-       9,    10,    11,    12,     0,     0,    13,     0,     0,     0,
-       0,     0,     0,     0,     0,    42,    15,     0,     1,    16,
-       2,     0,     0,     0,     3,     4,     5,     6,     7,     8,
-       9,    10,    11,    12,     0,     0,    13,    47,    48,    49,
-       0,     0,     0,     0,     0,    14,    15,     0,     0,    16,
-       0,     0,     0,    50,    51,    52,    53,    54,    55,    56,
-      57,    47,    48,    49,     0,     0,     0,    58,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    50,    51,    52,
-      53,    54,    55,    56,    57,    47,    48,    49,     0,     0,
-       0,    65,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    50,    51,    52,    53,    54,    55,    56,    57,    47,
-      48,    49,     0,     0,     0,    66,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    50,    51,    52,    53,    54,
-      55,    56,    57,    47,    48,    49,     0,     0,     0,    92,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,    50,
-      51,    52,    53,    54,    55,    56,    57,     0,     0,     0,
-       2,     0,     0,   101,     3,     4,     5,     0,     0,     0,
-       9,    10,    11,    12,     0,     0,    13,    47,    48,    49,
-       0,     0,     0,     0,     0,     0,    15,     0,     0,    16,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    47,    48,    67,     0,     0,    50,    51,    52,    53,
-      54,    55,    56,    57,    48,     0,     0,    50,    51,    52,
-      53,    54,    55,    56,    57,     0,     0,     0,     0,    50,
-      51,    52,    53,    54,    55,    56,    57
+      34,    68,    26,     2,    42,    73,    74,     3,     4,     5,
+      27,    31,    33,    25,    54,    55,    28,    24,    44,    45,
+      46,    34,    37,     6,     7,     8,    59,    60,    61,    65,
+      29,    43,    70,    93,    32,    48,    49,    50,    51,    52,
+      53,    54,    55,    69,    76,    77,    78,    79,    80,    81,
+      82,    83,    84,    85,    86,    30,    87,    27,    71,    72,
+       2,    91,   102,    88,     3,     4,     5,    92,    95,   108,
+      25,    96,   103,    94,   104,   105,   107,   114,   106,   113,
+      99,    15,   112,    41,     0,    38,    39,     0,     2,     0,
+       0,   110,     3,     4,     5,     6,     7,     8,     9,    10,
+      11,    12,     0,     0,    13,    52,    53,    54,    55,     0,
+       0,     0,     1,    40,     2,     0,     0,    15,     3,     4,
+       5,     6,     7,     8,     9,    10,    11,    12,     0,     0,
+      13,    45,    46,    47,     0,     0,     0,     0,     0,    14,
+       0,     0,     0,    15,     0,     0,     0,    48,    49,    50,
+      51,    52,    53,    54,    55,    45,    46,    47,     0,     0,
+       0,    56,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    48,    49,    50,    51,    52,    53,    54,    55,    45,
+      46,    47,     0,     0,     0,    63,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    48,    49,    50,    51,    52,
+      53,    54,    55,    45,    46,    47,     0,     0,     0,    64,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,    48,
+      49,    50,    51,    52,    53,    54,    55,    45,    46,    47,
+       0,     0,     0,    89,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    48,    49,    50,    51,    52,    53,    54,
+      55,     0,     0,     0,     2,     0,     0,    98,     3,     4,
+       5,     0,     0,     0,     9,    10,    11,    12,     0,     0,
+      13,    45,    46,    47,     0,     0,     0,     0,     0,     0,
+      46,     0,     0,    15,     0,     0,     0,    48,    49,    50,
+      51,    52,    53,    54,    55,    48,    49,    50,    51,    52,
+      53,    54,    55
 };
 
 static const yytype_int8 yycheck[] =
 {
-      16,    37,    29,     3,     1,    16,    34,    35,    35,    10,
-      11,    12,    12,    13,     3,    15,    26,    27,     7,     8,
-       9,    28,    38,    29,    13,    29,    13,    38,    28,    29,
-      30,    28,     3,    29,    70,    13,     7,     8,     9,    30,
-      29,    33,    13,    28,    28,    34,    28,    47,    48,    49,
-      50,    51,    52,    53,    54,    55,    56,    57,    29,    59,
-      29,    13,    30,    99,    64,    24,    25,    26,    27,    30,
-     106,    31,    30,    17,    13,    32,    17,    77,   114,   112,
-      -1,    -1,    98,    -1,    -1,    -1,    -1,     0,     1,    -1,
-       3,    -1,    -1,   109,     7,     8,     9,    10,    11,    12,
-      13,    14,    15,    16,    -1,    -1,    19,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    28,    29,    -1,     1,    32,
-       3,    -1,    -1,    -1,     7,     8,     9,    10,    11,    12,
-      13,    14,    15,    16,    -1,    -1,    19,     4,     5,     6,
-      -1,    -1,    -1,    -1,    -1,    28,    29,    -1,    -1,    32,
-      -1,    -1,    -1,    20,    21,    22,    23,    24,    25,    26,
-      27,     4,     5,     6,    -1,    -1,    -1,    34,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    20,    21,    22,
+      15,    35,     3,     3,     1,    34,    35,     7,     8,     9,
+      29,    12,    13,    13,    26,    27,    35,    28,    13,     4,
+       5,    36,    15,    10,    11,    12,    27,    28,    29,    13,
+      29,    28,    28,    67,    34,    20,    21,    22,    23,    24,
+      25,    26,    27,    36,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55,    29,    57,    29,    28,    28,
+       3,    62,    96,    30,     7,     8,     9,    33,    29,   103,
+      13,    30,    30,    74,    13,    30,    17,   111,    31,    13,
+      95,    32,   109,    16,    -1,     0,     1,    -1,     3,    -1,
+      -1,   106,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    -1,    -1,    19,    24,    25,    26,    27,    -1,
+      -1,    -1,     1,    28,     3,    -1,    -1,    32,     7,     8,
+       9,    10,    11,    12,    13,    14,    15,    16,    -1,    -1,
+      19,     4,     5,     6,    -1,    -1,    -1,    -1,    -1,    28,
+      -1,    -1,    -1,    32,    -1,    -1,    -1,    20,    21,    22,
       23,    24,    25,    26,    27,     4,     5,     6,    -1,    -1,
       -1,    34,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    20,    21,    22,    23,    24,    25,    26,    27,     4,
@@ -800,15 +795,15 @@ static const yytype_int8 yycheck[] =
       -1,    -1,    -1,    -1,    -1,    20,    21,    22,    23,    24,
       25,    26,    27,     4,     5,     6,    -1,    -1,    -1,    34,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    20,
-      21,    22,    23,    24,    25,    26,    27,    -1,    -1,    -1,
-       3,    -1,    -1,    34,     7,     8,     9,    -1,    -1,    -1,
-      13,    14,    15,    16,    -1,    -1,    19,     4,     5,     6,
-      -1,    -1,    -1,    -1,    -1,    -1,    29,    -1,    -1,    32,
-       4,     5,     6,    20,    21,    22,    23,    24,    25,    26,
-      27,     4,     5,    30,    -1,    -1,    20,    21,    22,    23,
-      24,    25,    26,    27,     5,    -1,    -1,    20,    21,    22,
-      23,    24,    25,    26,    27,    -1,    -1,    -1,    -1,    20,
-      21,    22,    23,    24,    25,    26,    27
+      21,    22,    23,    24,    25,    26,    27,     4,     5,     6,
+      -1,    -1,    -1,    34,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    20,    21,    22,    23,    24,    25,    26,
+      27,    -1,    -1,    -1,     3,    -1,    -1,    34,     7,     8,
+       9,    -1,    -1,    -1,    13,    14,    15,    16,    -1,    -1,
+      19,     4,     5,     6,    -1,    -1,    -1,    -1,    -1,    -1,
+       5,    -1,    -1,    32,    -1,    -1,    -1,    20,    21,    22,
+      23,    24,    25,    26,    27,    20,    21,    22,    23,    24,
+      25,    26,    27
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -816,17 +811,17 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     1,     3,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    19,    28,    29,    32,    37,    38,    40,
-      41,    46,    53,    57,    58,    28,    13,    58,    29,    35,
-      29,    29,    58,    34,    58,    58,    40,    47,    48,    57,
-       0,     1,    28,    38,     1,    28,    13,     4,     5,     6,
-      20,    21,    22,    23,    24,    25,    26,    27,    34,    51,
-      52,    58,    58,    58,    55,    34,    34,    30,    13,    49,
-      50,    53,    57,    28,    28,    28,    34,    35,    42,    58,
-      58,    58,    58,    58,    58,    58,    58,    58,    58,    58,
-      58,    30,    34,    39,    58,    33,    53,    58,    29,    30,
-      56,    34,    40,    44,    45,    53,    30,    13,    30,    31,
-      17,    53,    43,    40,    54,    46,    13,    53
+      14,    15,    16,    19,    28,    32,    37,    38,    40,    41,
+      46,    53,    57,    58,    28,    13,    58,    29,    35,    29,
+      29,    58,    34,    58,    40,    47,    48,    57,     0,     1,
+      28,    38,     1,    28,    13,     4,     5,     6,    20,    21,
+      22,    23,    24,    25,    26,    27,    34,    51,    52,    58,
+      58,    58,    55,    34,    34,    13,    49,    50,    53,    57,
+      28,    28,    28,    34,    35,    42,    58,    58,    58,    58,
+      58,    58,    58,    58,    58,    58,    58,    58,    30,    34,
+      39,    58,    33,    53,    58,    29,    30,    56,    34,    40,
+      44,    45,    53,    30,    13,    30,    31,    17,    53,    43,
+      40,    54,    46,    13,    53
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -838,7 +833,7 @@ static const yytype_int8 yyr1[] =
       50,    50,    51,    51,    52,    52,    53,    53,    53,    53,
       53,    54,    53,    53,    55,    56,    53,    53,    57,    57,
       58,    58,    58,    58,    58,    58,    58,    58,    58,    58,
-      58,    58,    58,    58,    58,    58,    58,    58
+      58,    58,    58,    58,    58,    58,    58
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -850,7 +845,7 @@ static const yytype_int8 yyr2[] =
        1,     2,     1,     2,     0,     1,     1,     2,     3,     2,
        4,     0,     9,     6,     0,     0,     7,     3,     5,     3,
        4,     3,     3,     3,     3,     1,     3,     3,     3,     3,
-       3,     3,     3,     3,     2,     1,     1,     1
+       3,     3,     3,     2,     1,     1,     1
 };
 
 
@@ -1318,25 +1313,25 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* lignes: lignes error '\n'  */
-#line 105 "ex1.y"
+#line 106 "ex1.y"
                         {yyerrok;}
-#line 1324 "ex1.tab.c"
+#line 1319 "ex1.tab.c"
     break;
 
   case 3: /* lignes: ligne error '\n'  */
-#line 106 "ex1.y"
+#line 107 "ex1.y"
                         {yyerrok; }
-#line 1330 "ex1.tab.c"
+#line 1325 "ex1.tab.c"
     break;
 
   case 4: /* lignes: error '\n'  */
-#line 107 "ex1.y"
+#line 108 "ex1.y"
                         {yyerrok; }
-#line 1336 "ex1.tab.c"
+#line 1331 "ex1.tab.c"
     break;
 
   case 12: /* fixif: %empty  */
-#line 121 "ex1.y"
+#line 122 "ex1.y"
 {
 	unsigned int number = new_label_number();
 	(yyval.entier) = number;
@@ -1348,132 +1343,136 @@ yyreduce:
 	"\tjmpc cx\n"
 	, number, number);
 }
-#line 1352 "ex1.tab.c"
+#line 1347 "ex1.tab.c"
     break;
 
   case 13: /* type: BOOL_LEX  */
-#line 134 "ex1.y"
+#line 135 "ex1.y"
                 { (yyval.entier) = BOOL_T; }
-#line 1358 "ex1.tab.c"
+#line 1353 "ex1.tab.c"
     break;
 
   case 14: /* type: INT_LEX  */
-#line 135 "ex1.y"
+#line 136 "ex1.y"
                 { (yyval.entier) = INT_T; }
-#line 1364 "ex1.tab.c"
+#line 1359 "ex1.tab.c"
     break;
 
   case 15: /* type: VOID_LEX  */
-#line 136 "ex1.y"
+#line 137 "ex1.y"
                 { (yyval.entier) = VOID_T; }
-#line 1370 "ex1.tab.c"
+#line 1365 "ex1.tab.c"
     break;
 
   case 16: /* $@1: %empty  */
-#line 141 "ex1.y"
+#line 142 "ex1.y"
                 {
 	 
 			// Vérification de l'unicité de l'identifiant de la fonction
-				funDef = search_symbol_table((yyvsp[0].chaine));
-				if (funDef != NULL) {
+				function_def = search_symbol_table((yyvsp[0].chaine));
+				if (function_def != NULL) {
 					fail_with("ID existe deja\n");
 				}
 
 			/* Ajout de l'identifiant de la fontion dans la
 			table des symboles et préparation du traitement 
 			de la définition de la fontion */
-				funDef = new_symbol_table_entry((yyvsp[0].chaine));
-				funDef->class = FUNCTION;
-				funDef->nParams = 0;
-				funDef->nLocalVariables = 0;
-				funDef->desc[0] = (yyvsp[-1].entier);
+				function_def = new_symbol_table_entry((yyvsp[0].chaine));
+				function_def->class = FUNCTION;
+				function_def->nParams = 0;
+				function_def->nLocalVariables = 0;
+				function_def->desc[0] = (yyvsp[-1].entier);
 
 				
 			}
-#line 1394 "ex1.tab.c"
+#line 1389 "ex1.tab.c"
     break;
 
   case 17: /* $@2: %empty  */
-#line 159 "ex1.y"
+#line 160 "ex1.y"
                                         {
 				printf(
 					"; Saut à fin définition %s()\n"
-					"\tconst dx,"FUN_DEF_FIN":%s\n"
+					"\tconst dx,"FUNCTION_DEFINITION_FIN":%s\n"
 					"\tjmp dx\n",
-				funDef->name,
-				funDef->name);
+				function_def->name,
+				function_def->name);
 
-				printf(":"FUN_DEF":%s\n", (yyvsp[-4].chaine));
+				printf(":"FUNCTION_DEFINITION":%s\n", (yyvsp[-4].chaine));
 
-				for (int i = funDef->nParams; i > 0 ; i--) {
+				for (int i = function_def->nParams; i > 0 ; i--) {
 					printf(
 						"; Code saut à l'initialisation du paramètre %d de %s()\n"
 						"\tconst dx,"VAR_PARAM_INIT":%s:%d\n"
 						"\tjmp dx\n"
 						":"VAR_PARAM_INIT_FIN":%s:%d\n",
-					i, funDef->name,
-					funDef->name, i,
-					funDef->name, i
+					i, function_def->name,
+					function_def->name, i,
+					function_def->name, i
 					);
 				}
 				printf(
 					"; Début de l'exécution du code de %s()\n",
-				funDef->name);
+				function_def->name);
 
 			}
-#line 1425 "ex1.tab.c"
+#line 1420 "ex1.tab.c"
     break;
 
   case 18: /* deffun: type ID $@1 '(' largV ')' $@2 blocinstr  */
-#line 184 "ex1.y"
+#line 185 "ex1.y"
                                     {
 
 			/* Fin de traitement de la définition de la fonction donc
 			 libération  des ressources */
-				for(int i = 0; i < funDef->nParams; i++){
+				for(int i = 0; i < function_def->nParams; i++){
 					free_first_symbol_table_entry();
 				}
 				printf(
+					"\tconst dx,"FUNCTION_CALL_FIN":%s\n"
+					"\tjmp dx\n"
 					"; Saut à la fin de l'exécution du code de %s()\n"
-					":fun:def:fin:%s\n",
-				funDef->name,
-				funDef->name);
-				funDef = NULL;
+					":function:definition:end:%s\n",
+				function_def->name,
+				function_def->name,
+				function_def->name);
+				function_def = NULL;
+
 			}
-#line 1444 "ex1.tab.c"
+#line 1443 "ex1.tab.c"
     break;
 
   case 19: /* largV: %empty  */
-#line 201 "ex1.y"
+#line 206 "ex1.y"
                         { (yyval.entier) = 0; }
-#line 1450 "ex1.tab.c"
+#line 1449 "ex1.tab.c"
     break;
 
   case 20: /* largV: largs  */
-#line 202 "ex1.y"
+#line 207 "ex1.y"
                         { (yyval.entier) = (yyvsp[0].entier); }
-#line 1456 "ex1.tab.c"
+#line 1455 "ex1.tab.c"
     break;
 
   case 21: /* largs: type ID  */
-#line 207 "ex1.y"
+#line 212 "ex1.y"
                                 {
 					// Vérification de l'unicité de l'identifiant de l'argument
-						symbol_table_entry* funArg = search_symbol_table((yyvsp[0].chaine));
-						if (funArg != NULL){
+						symbol_table_entry* function_arg = search_symbol_table((yyvsp[0].chaine));
+						if (function_arg != NULL){
 							fail_with("ID existe deja\n");
 						}
 
 					/* Ajout de l'identifiant de l'argument dans la
 					table des symboles */
-						funArg =  new_symbol_table_entry((yyvsp[0].chaine));
-						funArg->class = LOCAL_VARIABLE;
-						funArg->desc[0] = (yyvsp[-1].entier);
+						function_arg =  new_symbol_table_entry((yyvsp[0].chaine));
+						function_arg->class = LOCAL_VARIABLE;
+						function_arg->desc[0] = (yyvsp[-1].entier);
 
 					/* Mise à jour des informations de définition de
 					la fontion dans la table des symboles */
-						funDef->desc[funDef->nParams] = (yyvsp[-1].entier);
-						funDef->nParams++;
+						function_def->desc[function_def->nParams] = (yyvsp[-1].entier);
+						function_def->nParams++;
 
 						printf(
 							"; Code de définition et d'initialisation du paramètre %s de %s()\n"
@@ -1488,37 +1487,37 @@ yyreduce:
 							"\tstorew ax,bx\n"
 							"\tconst dx,"VAR_PARAM_INIT_FIN":%s:%lu\n"
 							"\tjmp dx\n",
-						(yyvsp[0].chaine), funDef->name,
-						funDef->name, funDef->nParams,
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, funDef->nParams
+						(yyvsp[0].chaine), function_def->name,
+						function_def->name, function_def->nParams,
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, function_def->nParams
 						);
 					}
-#line 1501 "ex1.tab.c"
+#line 1500 "ex1.tab.c"
     break;
 
   case 22: /* largs: largs ',' type ID  */
-#line 248 "ex1.y"
+#line 253 "ex1.y"
                         {
 					// Vérification de l'unicité de l'identifiant de l'argument
-						symbol_table_entry* funArg = search_symbol_table((yyvsp[0].chaine));
-						if (funArg != NULL){
+						symbol_table_entry* function_arg = search_symbol_table((yyvsp[0].chaine));
+						if (function_arg != NULL){
 							fail_with("ID existe deja\n");
 						}
 
 					/* Ajout de l'identifiant de l'argument dans la
 					table des symboles */
-						funArg =  new_symbol_table_entry((yyvsp[0].chaine));
-						funArg->class = LOCAL_VARIABLE;
-						funArg->desc[0] = (yyvsp[-1].entier);
+						function_arg =  new_symbol_table_entry((yyvsp[0].chaine));
+						function_arg->class = LOCAL_VARIABLE;
+						function_arg->desc[0] = (yyvsp[-1].entier);
 
 					/* Mise à jour des informations de définition de
 					la fontion dans la table des symboles */
-						funDef->nParams++;
-						funDef->desc[funDef->nParams] = (yyvsp[-1].entier);
+						function_def->nParams++;
+						function_def->desc[function_def->nParams] = (yyvsp[-1].entier);
 
 						
 						printf(
@@ -1534,115 +1533,115 @@ yyreduce:
 							"\tstorew ax,bx\n"
 							"\tconst dx,"VAR_PARAM_INIT_FIN":%s:%lu\n"
 							"\tjmp dx",
-						(yyvsp[0].chaine), funDef->name,
-						funDef->name, funDef->nParams,
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, (yyvsp[0].chaine),
-						funDef->name, funDef->nParams
+						(yyvsp[0].chaine), function_def->name,
+						function_def->name, function_def->nParams,
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, (yyvsp[0].chaine),
+						function_def->name, function_def->nParams
 						);
 					}
-#line 1547 "ex1.tab.c"
+#line 1546 "ex1.tab.c"
     break;
 
   case 23: /* blocinstr: '{' sdeclV sinstrV '}'  */
-#line 292 "ex1.y"
+#line 297 "ex1.y"
                         {
 							for (int i = 0; i < (yyvsp[-2].entier); i++) {
 								free_first_symbol_table_entry();
 							}
 							(yyval.entier) = (yyvsp[-2].entier) + (yyvsp[-1].entier);
 						}
-#line 1558 "ex1.tab.c"
+#line 1557 "ex1.tab.c"
     break;
 
   case 24: /* sdeclV: %empty  */
-#line 301 "ex1.y"
+#line 306 "ex1.y"
                         { (yyval.entier) = 0; }
-#line 1564 "ex1.tab.c"
+#line 1563 "ex1.tab.c"
     break;
 
   case 25: /* sdeclV: sdecl  */
-#line 302 "ex1.y"
+#line 307 "ex1.y"
                         { (yyval.entier) = (yyvsp[0].entier); }
-#line 1570 "ex1.tab.c"
+#line 1569 "ex1.tab.c"
     break;
 
   case 26: /* sdecl: decl  */
-#line 306 "ex1.y"
+#line 311 "ex1.y"
                         { (yyval.entier) = 1; }
-#line 1576 "ex1.tab.c"
+#line 1575 "ex1.tab.c"
     break;
 
   case 27: /* sdecl: sdecl decl  */
-#line 307 "ex1.y"
+#line 312 "ex1.y"
                 { (yyval.entier) = (yyvsp[-1].entier) + 1; }
-#line 1582 "ex1.tab.c"
+#line 1581 "ex1.tab.c"
     break;
 
   case 28: /* sinstrV: %empty  */
-#line 311 "ex1.y"
+#line 316 "ex1.y"
                         { (yyval.entier) = 0; }
-#line 1588 "ex1.tab.c"
+#line 1587 "ex1.tab.c"
     break;
 
   case 29: /* sinstrV: sinstr  */
-#line 312 "ex1.y"
+#line 317 "ex1.y"
                         { (yyval.entier) = (yyvsp[0].entier); }
-#line 1594 "ex1.tab.c"
+#line 1593 "ex1.tab.c"
     break;
 
   case 30: /* sinstr: instr  */
-#line 316 "ex1.y"
+#line 321 "ex1.y"
                         { (yyval.entier) = 1; }
-#line 1600 "ex1.tab.c"
+#line 1599 "ex1.tab.c"
     break;
 
   case 31: /* sinstr: sinstr instr  */
-#line 317 "ex1.y"
+#line 322 "ex1.y"
                 { (yyval.entier) = (yyvsp[-1].entier) +1; }
-#line 1606 "ex1.tab.c"
+#line 1605 "ex1.tab.c"
     break;
 
   case 32: /* lexpr: expr  */
-#line 324 "ex1.y"
+#line 329 "ex1.y"
                         { (yyval.entier) = 1;  }
-#line 1612 "ex1.tab.c"
+#line 1611 "ex1.tab.c"
     break;
 
   case 33: /* lexpr: lexpr expr  */
-#line 325 "ex1.y"
+#line 330 "ex1.y"
                 { (yyval.entier) = (yyvsp[-1].entier) + 1;}
-#line 1618 "ex1.tab.c"
+#line 1617 "ex1.tab.c"
     break;
 
   case 34: /* lexprV: %empty  */
-#line 329 "ex1.y"
+#line 334 "ex1.y"
                         { (yyval.entier) = 0; }
-#line 1624 "ex1.tab.c"
+#line 1623 "ex1.tab.c"
     break;
 
   case 35: /* lexprV: lexpr  */
-#line 330 "ex1.y"
+#line 335 "ex1.y"
                         { (yyval.entier) = (yyvsp[0].entier); }
-#line 1630 "ex1.tab.c"
+#line 1629 "ex1.tab.c"
     break;
 
   case 36: /* instr: blocinstr  */
-#line 335 "ex1.y"
+#line 340 "ex1.y"
                                 { (yyval.entier) = (yyvsp[0].entier); }
-#line 1636 "ex1.tab.c"
+#line 1635 "ex1.tab.c"
     break;
 
   case 37: /* instr: RETURN ';'  */
-#line 337 "ex1.y"
+#line 342 "ex1.y"
                         {
-						if (funDef == NULL) {
+						if (function_def == NULL) {
 							fail_with("Espace global, retour de valeur impossible !");
 								(yyval.entier) = ERR;
 						} else {
-							if (funDef->desc[0] != VOID_T) {
+							if (function_def->desc[0] != VOID_T) {
 								fail_with("Types de retour incompatible !");
 								(yyval.entier) = ERR;
 							} else {
@@ -1650,19 +1649,19 @@ yyreduce:
 							}
 						}
 					}
-#line 1654 "ex1.tab.c"
+#line 1653 "ex1.tab.c"
     break;
 
   case 38: /* instr: RETURN expr ';'  */
-#line 351 "ex1.y"
+#line 356 "ex1.y"
                         {
 						if ((yyvsp[-1].entier) != ERR) {
-							if (funDef == NULL) {
+							if (function_def == NULL) {
 								fail_with("Espace global, retour de valeur impossible !");
 								(yyval.entier) = ERR;
 							} else {
-								if ((funDef->desc[0] == INT_T && (yyvsp[-1].entier) != T_INT)
-									|| (funDef->desc[0] == BOOL_T && (yyvsp[-1].entier) != T_BOOL)) {
+								if ((function_def->desc[0] == INT_T && (yyvsp[-1].entier) != T_INT)
+									|| (function_def->desc[0] == BOOL_T && (yyvsp[-1].entier) != T_BOOL)) {
 										fail_with("Types de retour incompatible !");
 										(yyval.entier) = ERR;
 								} else {
@@ -1671,21 +1670,21 @@ yyreduce:
 							}
 						}
 					}
-#line 1675 "ex1.tab.c"
+#line 1674 "ex1.tab.c"
     break;
 
   case 39: /* instr: expr ';'  */
-#line 368 "ex1.y"
+#line 373 "ex1.y"
                                 {
  					if ((yyvsp[-1].entier) != ERR){
- 						printf("\tpop\n");
+ 						//printf("\tpop\n");
  					}
  				}
-#line 1685 "ex1.tab.c"
+#line 1684 "ex1.tab.c"
     break;
 
   case 40: /* instr: ID '=' expr ';'  */
-#line 373 "ex1.y"
+#line 378 "ex1.y"
                                 {
 					symbol_table_entry* ste = search_symbol_table((yyvsp[-3].chaine));
 					if(ste == NULL){
@@ -1700,11 +1699,11 @@ yyreduce:
 					"\tstorew ax,bx\n",
 					 ste->name, ste->name);
 				}
-#line 1704 "ex1.tab.c"
+#line 1703 "ex1.tab.c"
     break;
 
   case 41: /* $@3: %empty  */
-#line 388 "ex1.y"
+#line 393 "ex1.y"
                                    {
 					printf(";si if No %d vrai et instr executé\n"
 					"\tconst ax,if:fin:%d\n"
@@ -1713,43 +1712,43 @@ yyreduce:
 					":if:test:neg:%d\n"
 					, (yyvsp[-3].entier), (yyvsp[-3].entier), (yyvsp[-3].entier), (yyvsp[-3].entier));
 				}
-#line 1717 "ex1.tab.c"
+#line 1716 "ex1.tab.c"
     break;
 
   case 42: /* instr: IF '(' expr fixif ')' instr ELSE $@3 instr  */
-#line 395 "ex1.y"
+#line 400 "ex1.y"
                                         {
 						if ( (yyvsp[-6].entier) != T_BOOL ) { fail_with("condition du if non booleenne \n"); }
 						printf(";fin du if No %d\n"
 						":if:fin:%d\n"
 						, (yyvsp[-5].entier), (yyvsp[-5].entier));
 					}
-#line 1728 "ex1.tab.c"
+#line 1727 "ex1.tab.c"
     break;
 
   case 43: /* instr: IF '(' expr fixif ')' instr  */
-#line 401 "ex1.y"
+#line 406 "ex1.y"
                               {
 				if ( (yyvsp[-3].entier) != T_BOOL ) { fail_with("condition du if non booleenne \n"); }
 				printf(";si if No %d est faux\n"
 				":if:test:neg:%d\n"
 				, (yyvsp[-2].entier), (yyvsp[-2].entier));
 			}
-#line 1739 "ex1.tab.c"
+#line 1738 "ex1.tab.c"
     break;
 
   case 44: /* @4: %empty  */
-#line 407 "ex1.y"
+#line 412 "ex1.y"
            {
 	unsigned int number = new_label_number();
 	(yyval.entier) = number;
 	printf(":debut:while:%u\n",number);
 	}
-#line 1749 "ex1.tab.c"
+#line 1748 "ex1.tab.c"
     break;
 
   case 45: /* $@5: %empty  */
-#line 411 "ex1.y"
+#line 416 "ex1.y"
              {
 		printf("; while No %u\n"
 		"\tpop ax\n"
@@ -1759,11 +1758,11 @@ yyreduce:
 		"\tjmpc cx\n"
 		, (yyvsp[-1].entier), (yyvsp[-1].entier));
 				}
-#line 1763 "ex1.tab.c"
+#line 1762 "ex1.tab.c"
     break;
 
   case 46: /* instr: WHILE '(' @4 expr $@5 ')' instr  */
-#line 419 "ex1.y"
+#line 424 "ex1.y"
                                           {
 						if( (yyvsp[-3].entier) != T_BOOL ){ fail_with("condition non booléenne\n");}
 						printf("; fin tour de boucle\n"
@@ -1771,11 +1770,11 @@ yyreduce:
 						"\tjmp cx\n"
 						":fin:while:%u\n", (yyvsp[-4].entier), (yyvsp[-4].entier));
 							}
-#line 1775 "ex1.tab.c"
+#line 1774 "ex1.tab.c"
     break;
 
   case 47: /* instr: PRINT expr ';'  */
-#line 426 "ex1.y"
+#line 431 "ex1.y"
                                 {
 					if ((yyvsp[-1].entier) == T_INT) {
  						printf("; Pour afficher la valeur calculée, qui se trouve normalement en sommet de pile\n"
@@ -1819,11 +1818,11 @@ yyreduce:
 						buffer2);
  					}
 				}
-#line 1823 "ex1.tab.c"
+#line 1822 "ex1.tab.c"
     break;
 
   case 48: /* decl: type ID '=' expr ';'  */
-#line 472 "ex1.y"
+#line 477 "ex1.y"
                         {
 	 					// Vérifier la comatibilité des types
 						// Ajouter l'ID dans la table des symboles en fontion
@@ -1840,11 +1839,11 @@ yyreduce:
 								var = new_symbol_table_entry((yyvsp[-3].chaine));
 								var->desc[0] = (yyvsp[-4].entier);
 
-								if (funDef != NULL) {
+								if (function_def != NULL) {
 							// Analyse d'une fonction la variable est locale
 							// Mise à jour de la définition de la fonction
 									var->class = LOCAL_VARIABLE;
-									funDef->nLocalVariables++;
+									function_def->nLocalVariables++;
 									printf(
 										"; Code nouvelle variable locale (%s, %s)\n"
 										"\tconst ax,"VAR_LOCAL_VAL":%s:%s\n"
@@ -1856,11 +1855,11 @@ yyreduce:
 										"\tpop ax\n"
 										"\tconst bx,"VAR_LOCAL":%s:%s\n"
 										"\tstorew ax,bx\n",
-									funDef->name, (yyvsp[-3].chaine),
-									funDef->name, (yyvsp[-3].chaine),
-									funDef->name, (yyvsp[-3].chaine),
-									funDef->name, (yyvsp[-3].chaine),
-									funDef->name, (yyvsp[-3].chaine));
+									function_def->name, (yyvsp[-3].chaine),
+									function_def->name, (yyvsp[-3].chaine),
+									function_def->name, (yyvsp[-3].chaine),
+									function_def->name, (yyvsp[-3].chaine),
+									function_def->name, (yyvsp[-3].chaine));
 								} else {
 							// Aucune analyse de fonction en cours, la variable est globale
 									var->class = GLOBAL_VARIABLE;
@@ -1886,11 +1885,11 @@ yyreduce:
 								fail_with("Type imcompatible !");
 							}
 						}
-#line 1890 "ex1.tab.c"
+#line 1889 "ex1.tab.c"
     break;
 
   case 49: /* decl: type ID ';'  */
-#line 534 "ex1.y"
+#line 539 "ex1.y"
                 {
 						// Ajouter l'ID dans la table des symboles en fontion
 						//  de la portée de la varible
@@ -1904,17 +1903,17 @@ yyreduce:
 								var = new_symbol_table_entry((yyvsp[-1].chaine));
 								var->desc[0] = (yyvsp[-2].entier);
 								
-								if (funDef != NULL) {
+								if (function_def != NULL) {
 							// Analyse d'une fonction la variable est locale
 							// Mise à jour de la définition de la fonction
 									var->class = LOCAL_VARIABLE;
-									funDef->nLocalVariables++;
+									function_def->nLocalVariables++;
 									printf(
 										"; Code nouvelle variable locale (%s, %s)\n"
 										":"VAR_LOCAL":%s:%s\n"
 										"@int 0\n",
-									funDef->name, (yyvsp[-1].chaine),
-									funDef->name, (yyvsp[-1].chaine));
+									function_def->name, (yyvsp[-1].chaine),
+									function_def->name, (yyvsp[-1].chaine));
 
 								} else {
 							// Aucune analyse de fonction en cours, la variable est globale
@@ -1929,11 +1928,11 @@ yyreduce:
 
 								(yyval.entier) = ((yyvsp[-2].entier) == INT_T) ? T_INT : T_BOOL;
 						}
-#line 1933 "ex1.tab.c"
+#line 1932 "ex1.tab.c"
     break;
 
   case 50: /* expr: ID '(' lexprV ')'  */
-#line 576 "ex1.y"
+#line 581 "ex1.y"
                                 {
 						// Vérifation de l'existance de la définition de la fonction
 							symbol_table_entry* fun = search_symbol_table((yyvsp[-3].chaine));
@@ -1956,10 +1955,10 @@ yyreduce:
 
 							//- Exécution de la fonction */
 							printf(
-								"; Saut à la défintion de %s() pour exécution\n"
-								"\tconst dx,"FUN_DEF":%s\n"
-								"\tjmp dx\n\n"
-								":"FUN_DEF_FIN"%s",
+								"; Saut à %s() pour exécution\n"
+								"\tconst dx,"FUNCTION_DEFINITION":%s\n"
+								"\tjmp dx\n"
+								":"FUNCTION_CALL_FIN":%s\n",
 							fun->name,
 							fun->name,
 							fun->name);
@@ -1968,11 +1967,11 @@ yyreduce:
 								? T_INT
 								: T_BOOL;
 						}
-#line 1972 "ex1.tab.c"
+#line 1971 "ex1.tab.c"
     break;
 
   case 51: /* expr: expr '+' expr  */
-#line 610 "ex1.y"
+#line 615 "ex1.y"
                         {
 						// Vérifier que expr1 et expr2 sont de type int sinon erreur de typage
 						// puis évaluer l'addition
@@ -1989,11 +1988,11 @@ yyreduce:
 							(yyval.entier) = ERR;
 						}
 					}
-#line 1993 "ex1.tab.c"
+#line 1992 "ex1.tab.c"
     break;
 
   case 52: /* expr: expr '-' expr  */
-#line 626 "ex1.y"
+#line 631 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type int sinon erreur de typage
 						// puis évaluer la soustraction
@@ -2009,11 +2008,11 @@ yyreduce:
 								(yyval.entier) = ERR;
 							}
 						}
-#line 2013 "ex1.tab.c"
+#line 2012 "ex1.tab.c"
     break;
 
   case 53: /* expr: expr '*' expr  */
-#line 641 "ex1.y"
+#line 646 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type int sinon erreur de typage
 						// puis évaluer la multiplication
@@ -2029,11 +2028,11 @@ yyreduce:
 								(yyval.entier) = ERR;
 							}
 						}
-#line 2033 "ex1.tab.c"
+#line 2032 "ex1.tab.c"
     break;
 
   case 54: /* expr: expr '/' expr  */
-#line 656 "ex1.y"
+#line 661 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type int sinon erreur de typage
 						// puis évaluer la division
@@ -2051,11 +2050,11 @@ yyreduce:
 								(yyval.entier) = ERR;
 							}
 						}
-#line 2055 "ex1.tab.c"
+#line 2054 "ex1.tab.c"
     break;
 
   case 55: /* expr: NUMBER  */
-#line 673 "ex1.y"
+#line 678 "ex1.y"
                                         {
 							printf(
 								"; Ajout du nombre %d\n"
@@ -2066,17 +2065,11 @@ yyreduce:
 
 							(yyval.entier) = T_INT;
 						}
-#line 2070 "ex1.tab.c"
+#line 2069 "ex1.tab.c"
     break;
 
-  case 56: /* expr: '(' expr ')'  */
-#line 684 "ex1.y"
-                                { (yyval.entier) = (yyvsp[-1].entier); }
-#line 2076 "ex1.tab.c"
-    break;
-
-  case 57: /* expr: expr EQ expr  */
-#line 686 "ex1.y"
+  case 56: /* expr: expr EQ expr  */
+#line 691 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2126,11 +2119,11 @@ yyreduce:
 							}
 								printf("; Fin EQ\n");
 						}
-#line 2130 "ex1.tab.c"
+#line 2123 "ex1.tab.c"
     break;
 
-  case 58: /* expr: expr INF expr  */
-#line 735 "ex1.y"
+  case 57: /* expr: expr INF expr  */
+#line 740 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2180,11 +2173,11 @@ yyreduce:
 							}
 							printf("; Fin INF\n");
 						}
-#line 2184 "ex1.tab.c"
+#line 2177 "ex1.tab.c"
     break;
 
-  case 59: /* expr: expr SUP expr  */
-#line 784 "ex1.y"
+  case 58: /* expr: expr SUP expr  */
+#line 789 "ex1.y"
                         {
 							if ((yyvsp[-2].entier) == T_INT && (yyvsp[0].entier) == T_INT) {
 								unsigned int labelNumber = new_label_number();
@@ -2231,11 +2224,11 @@ yyreduce:
 							}
 							printf("; Fin SUP\n");
 						}
-#line 2235 "ex1.tab.c"
+#line 2228 "ex1.tab.c"
     break;
 
-  case 60: /* expr: expr INF_EQ expr  */
-#line 830 "ex1.y"
+  case 59: /* expr: expr INF_EQ expr  */
+#line 835 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2289,11 +2282,11 @@ yyreduce:
 							}
 							printf("; Fin INF_EQ\n");
                       	}
-#line 2293 "ex1.tab.c"
+#line 2286 "ex1.tab.c"
     break;
 
-  case 61: /* expr: expr SUP_EQ expr  */
-#line 883 "ex1.y"
+  case 60: /* expr: expr SUP_EQ expr  */
+#line 888 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2345,11 +2338,11 @@ yyreduce:
 							}
 							printf(";Fin INF_EQ\n");
                       	}
-#line 2349 "ex1.tab.c"
+#line 2342 "ex1.tab.c"
     break;
 
-  case 62: /* expr: expr AND expr  */
-#line 934 "ex1.y"
+  case 61: /* expr: expr AND expr  */
+#line 939 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// puis évaluer le ET (epxr1 * expr2 car true = 1)
@@ -2366,11 +2359,11 @@ yyreduce:
 							}
 							printf("; Fin AND\n");
 						}
-#line 2370 "ex1.tab.c"
+#line 2363 "ex1.tab.c"
     break;
 
-  case 63: /* expr: expr OR expr  */
-#line 950 "ex1.y"
+  case 62: /* expr: expr OR expr  */
+#line 955 "ex1.y"
                                 {
 						// Vérifier que expr1 et expr2 sont de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2422,11 +2415,11 @@ yyreduce:
 							}
 							printf("; Fin OR\n");
 						}
-#line 2426 "ex1.tab.c"
+#line 2419 "ex1.tab.c"
     break;
 
-  case 64: /* expr: NEG expr  */
-#line 1001 "ex1.y"
+  case 63: /* expr: NEG expr  */
+#line 1006 "ex1.y"
                                         {
 						// Vérifier que expr est de type bool sinon erreur de typage
 						// Créer un nouveau label pour anticiper la récursivité
@@ -2473,11 +2466,11 @@ yyreduce:
 							}
 							printf("; Fin NEG\n");
 						}
-#line 2477 "ex1.tab.c"
+#line 2470 "ex1.tab.c"
     break;
 
-  case 65: /* expr: TRUE  */
-#line 1047 "ex1.y"
+  case 64: /* expr: TRUE  */
+#line 1052 "ex1.y"
                                         {
 						// Ajouter true en pile
 							printf(
@@ -2487,11 +2480,11 @@ yyreduce:
 							1);
 							(yyval.entier) = T_BOOL;
 						}
-#line 2491 "ex1.tab.c"
+#line 2484 "ex1.tab.c"
     break;
 
-  case 66: /* expr: FALSE  */
-#line 1056 "ex1.y"
+  case 65: /* expr: FALSE  */
+#line 1061 "ex1.y"
                                         {
 						// Ajouter false en pile
 							printf(
@@ -2501,11 +2494,11 @@ yyreduce:
 							0);
 							(yyval.entier) = T_BOOL;
 						}
-#line 2505 "ex1.tab.c"
+#line 2498 "ex1.tab.c"
     break;
 
-  case 67: /* expr: ID  */
-#line 1065 "ex1.y"
+  case 66: /* expr: ID  */
+#line 1070 "ex1.y"
                                         {
 						// Vérifation de l'existance de la déclaration de la variable
 							symbol_table_entry* var = search_symbol_table((yyvsp[0].chaine));
@@ -2513,7 +2506,7 @@ yyreduce:
 							if (var == NULL){
 								//fail_with("%s n'a pas été déclaré\n", $1);
 								(yyval.entier) = ERR;
-							} else if (funDef == NULL && var->class == GLOBAL_VARIABLE) {
+							} else if (function_def == NULL && var->class == GLOBAL_VARIABLE) {
 						// Accès à une varibale globale
 								printf(
 									"; Debut évaluation ID (variable globale)\n"
@@ -2528,7 +2521,7 @@ yyreduce:
 									? T_INT
 									: T_BOOL;
 
-							} else if (funDef != NULL && var->class == LOCAL_VARIABLE) {
+							} else if (function_def != NULL && var->class == LOCAL_VARIABLE) {
 						// Accès à une varibale locale ou un paramètre
 								printf(
 									"; Debut évaluation ID (variable locale)\n"
@@ -2536,8 +2529,8 @@ yyreduce:
 									"\tconst bx,"VAR_LOCAL":%s:%s\n"
 									"\tloadw ax,bx\n"
 									"\tpush ax\n",
-								funDef->name, (yyvsp[0].chaine),
-								funDef->name, (yyvsp[0].chaine));
+								function_def->name, (yyvsp[0].chaine),
+								function_def->name, (yyvsp[0].chaine));
 								(yyval.entier) = (var->desc[0] == INT_T)
 									? T_INT
 									: T_BOOL;
@@ -2546,11 +2539,11 @@ yyreduce:
 								(yyval.entier) = ERR;
 							}
 						}
-#line 2550 "ex1.tab.c"
+#line 2543 "ex1.tab.c"
     break;
 
 
-#line 2554 "ex1.tab.c"
+#line 2547 "ex1.tab.c"
 
       default: break;
     }
@@ -2744,7 +2737,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 1106 "ex1.y"
+#line 1111 "ex1.y"
 
 
 void yyerror(char const *s) {
