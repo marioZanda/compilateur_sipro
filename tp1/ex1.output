@@ -1,0 +1,1800 @@
+État 26 conflits: 1 décalage/réduction
+
+
+Grammaire
+
+    0 $accept: lignes $end
+
+    1 lignes: lignes error '\n'
+    2       | ligne error '\n'
+    3       | error '\n'
+    4       | lignes ligne '\n'
+    5       | lignes '\n'
+    6       | ligne '\n'
+    7       | '\n'
+
+    8 ligne: instr
+    9      | decl
+   10      | deffun
+
+   11 fixif: %empty
+
+   12 type: BOOL_LEX
+   13     | INT_LEX
+   14     | VOID_LEX
+
+   15 $@1: %empty
+
+   16 $@2: %empty
+
+   17 deffun: type ID $@1 '(' largV ')' $@2 blocinstr
+
+   18 largV: %empty
+   19      | largs
+
+   20 largs: type ID
+   21      | largs ',' type ID
+
+   22 blocinstr: '{' sdeclV sinstrV '}'
+
+   23 sdeclV: %empty
+   24       | sdecl
+
+   25 sdecl: decl
+   26      | sdecl decl
+
+   27 sinstrV: %empty
+   28        | sinstr
+
+   29 sinstr: instr
+   30       | sinstr instr
+
+   31 lexpr: expr
+   32      | lexpr expr
+
+   33 lexprV: %empty
+   34       | lexpr
+
+   35 instr: blocinstr
+   36      | RETURN ';'
+   37      | RETURN expr ';'
+   38      | expr ';'
+   39      | ID '=' expr ';'
+
+   40 $@3: %empty
+
+   41 instr: IF '(' expr fixif ')' instr ELSE $@3 instr
+   42      | IF '(' expr fixif ')' instr
+
+   43 @4: %empty
+
+   44 $@5: %empty
+
+   45 instr: WHILE '(' @4 expr $@5 ')' instr
+   46      | PRINT expr ';'
+
+   47 decl: type ID '=' expr ';'
+   48     | type ID ';'
+
+   49 expr: ID '(' lexprV ')'
+   50     | expr '+' expr
+   51     | expr '-' expr
+   52     | expr '*' expr
+   53     | expr '/' expr
+   54     | NUMBER
+   55     | '(' expr ')'
+   56     | expr EQ expr
+   57     | expr INF expr
+   58     | expr SUP expr
+   59     | expr INF_EQ expr
+   60     | expr SUP_EQ expr
+   61     | expr AND expr
+   62     | expr OR expr
+   63     | NEG expr
+   64     | TRUE
+   65     | FALSE
+   66     | ID
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+    $end (0) 0
+    '\n' (10) 1 2 3 4 5 6 7
+    '(' (40) 17 41 42 45 49 55
+    ')' (41) 17 41 42 45 49 55
+    '*' (42) 52
+    '+' (43) 50
+    ',' (44) 21
+    '-' (45) 51
+    '/' (47) 53
+    ';' (59) 36 37 38 39 46 47 48
+    '=' (61) 39 47
+    '{' (123) 22
+    '}' (125) 22
+    error (256) 1 2 3
+    NUMBER <entier> (258) 54
+    AND (259) 61
+    EQ (260) 56
+    OR (261) 62
+    NEG (262) 63
+    TRUE (263) 64
+    FALSE (264) 65
+    BOOL_LEX (265) 12
+    INT_LEX (266) 13
+    VOID_LEX (267) 14
+    ID <chaine> (268) 17 20 21 39 47 48 49 66
+    IF (269) 41 42
+    WHILE (270) 45
+    PRINT (271) 46
+    ELSE (272) 41
+    NON_ELSE (273)
+    RETURN (274) 36 37
+    SUP (275) 58
+    SUP_EQ (276) 60
+    INF (277) 57
+    INF_EQ (278) 59
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+    $accept (36)
+        à gauche: 0
+    lignes (37)
+        à gauche: 1 2 3 4 5 6 7
+        à droite: 0 1 4 5
+    ligne (38)
+        à gauche: 8 9 10
+        à droite: 2 4 6
+    fixif (39)
+        à gauche: 11
+        à droite: 41 42
+    type <entier> (40)
+        à gauche: 12 13 14
+        à droite: 17 20 21 47 48
+    deffun (41)
+        à gauche: 17
+        à droite: 10
+    $@1 (42)
+        à gauche: 15
+        à droite: 17
+    $@2 (43)
+        à gauche: 16
+        à droite: 17
+    largV <entier> (44)
+        à gauche: 18 19
+        à droite: 17
+    largs <entier> (45)
+        à gauche: 20 21
+        à droite: 19 21
+    blocinstr <entier> (46)
+        à gauche: 22
+        à droite: 17 35
+    sdeclV <entier> (47)
+        à gauche: 23 24
+        à droite: 22
+    sdecl <entier> (48)
+        à gauche: 25 26
+        à droite: 24 26
+    sinstrV <entier> (49)
+        à gauche: 27 28
+        à droite: 22
+    sinstr <entier> (50)
+        à gauche: 29 30
+        à droite: 28 30
+    lexpr <entier> (51)
+        à gauche: 31 32
+        à droite: 32 34
+    lexprV <entier> (52)
+        à gauche: 33 34
+        à droite: 49
+    instr <entier> (53)
+        à gauche: 35 36 37 38 39 41 42 45 46
+        à droite: 8 29 30 41 42 45
+    $@3 (54)
+        à gauche: 40
+        à droite: 41
+    @4 (55)
+        à gauche: 43
+        à droite: 45
+    $@5 (56)
+        à gauche: 44
+        à droite: 45
+    decl <entier> (57)
+        à gauche: 47 48
+        à droite: 9 25 26
+    expr <entier> (58)
+        à gauche: 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+        à droite: 31 32 37 38 39 41 42 45 46 47 50 51 52 53 55 56 57 58 59 60 61 62 63
+
+
+État 0
+
+    0 $accept: • lignes $end
+
+    error     décalage et aller à l'état 1
+    NUMBER    décalage et aller à l'état 2
+    NEG       décalage et aller à l'état 3
+    TRUE      décalage et aller à l'état 4
+    FALSE     décalage et aller à l'état 5
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+    ID        décalage et aller à l'état 9
+    IF        décalage et aller à l'état 10
+    WHILE     décalage et aller à l'état 11
+    PRINT     décalage et aller à l'état 12
+    RETURN    décalage et aller à l'état 13
+    '\n'      décalage et aller à l'état 14
+    '('       décalage et aller à l'état 15
+    '{'       décalage et aller à l'état 16
+
+    lignes     aller à l'état 17
+    ligne      aller à l'état 18
+    type       aller à l'état 19
+    deffun     aller à l'état 20
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 22
+    decl       aller à l'état 23
+    expr       aller à l'état 24
+
+
+État 1
+
+    3 lignes: error • '\n'
+
+    '\n'  décalage et aller à l'état 25
+
+
+État 2
+
+   54 expr: NUMBER •
+
+    $défaut  réduction par utilisation de la règle 54 (expr)
+
+
+État 3
+
+   63 expr: NEG • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 27
+
+
+État 4
+
+   64 expr: TRUE •
+
+    $défaut  réduction par utilisation de la règle 64 (expr)
+
+
+État 5
+
+   65 expr: FALSE •
+
+    $défaut  réduction par utilisation de la règle 65 (expr)
+
+
+État 6
+
+   12 type: BOOL_LEX •
+
+    $défaut  réduction par utilisation de la règle 12 (type)
+
+
+État 7
+
+   13 type: INT_LEX •
+
+    $défaut  réduction par utilisation de la règle 13 (type)
+
+
+État 8
+
+   14 type: VOID_LEX •
+
+    $défaut  réduction par utilisation de la règle 14 (type)
+
+
+État 9
+
+   39 instr: ID • '=' expr ';'
+   49 expr: ID • '(' lexprV ')'
+   66     | ID •
+
+    '('  décalage et aller à l'état 28
+    '='  décalage et aller à l'état 29
+
+    $défaut  réduction par utilisation de la règle 66 (expr)
+
+
+État 10
+
+   41 instr: IF • '(' expr fixif ')' instr ELSE $@3 instr
+   42      | IF • '(' expr fixif ')' instr
+
+    '('  décalage et aller à l'état 30
+
+
+État 11
+
+   45 instr: WHILE • '(' @4 expr $@5 ')' instr
+
+    '('  décalage et aller à l'état 31
+
+
+État 12
+
+   46 instr: PRINT • expr ';'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 32
+
+
+État 13
+
+   36 instr: RETURN • ';'
+   37      | RETURN • expr ';'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+    ';'     décalage et aller à l'état 33
+
+    expr  aller à l'état 34
+
+
+État 14
+
+    7 lignes: '\n' •
+
+    $défaut  réduction par utilisation de la règle 7 (lignes)
+
+
+État 15
+
+   55 expr: '(' • expr ')'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 35
+
+
+État 16
+
+   22 blocinstr: '{' • sdeclV sinstrV '}'
+
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+
+    $défaut  réduction par utilisation de la règle 23 (sdeclV)
+
+    type    aller à l'état 36
+    sdeclV  aller à l'état 37
+    sdecl   aller à l'état 38
+    decl    aller à l'état 39
+
+
+État 17
+
+    0 $accept: lignes • $end
+    1 lignes: lignes • error '\n'
+    4       | lignes • ligne '\n'
+    5       | lignes • '\n'
+
+    $end      décalage et aller à l'état 40
+    error     décalage et aller à l'état 41
+    NUMBER    décalage et aller à l'état 2
+    NEG       décalage et aller à l'état 3
+    TRUE      décalage et aller à l'état 4
+    FALSE     décalage et aller à l'état 5
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+    ID        décalage et aller à l'état 9
+    IF        décalage et aller à l'état 10
+    WHILE     décalage et aller à l'état 11
+    PRINT     décalage et aller à l'état 12
+    RETURN    décalage et aller à l'état 13
+    '\n'      décalage et aller à l'état 42
+    '('       décalage et aller à l'état 15
+    '{'       décalage et aller à l'état 16
+
+    ligne      aller à l'état 43
+    type       aller à l'état 19
+    deffun     aller à l'état 20
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 22
+    decl       aller à l'état 23
+    expr       aller à l'état 24
+
+
+État 18
+
+    2 lignes: ligne • error '\n'
+    6       | ligne • '\n'
+
+    error  décalage et aller à l'état 44
+    '\n'   décalage et aller à l'état 45
+
+
+État 19
+
+   17 deffun: type • ID $@1 '(' largV ')' $@2 blocinstr
+   47 decl: type • ID '=' expr ';'
+   48     | type • ID ';'
+
+    ID  décalage et aller à l'état 46
+
+
+État 20
+
+   10 ligne: deffun •
+
+    $défaut  réduction par utilisation de la règle 10 (ligne)
+
+
+État 21
+
+   35 instr: blocinstr •
+
+    $défaut  réduction par utilisation de la règle 35 (instr)
+
+
+État 22
+
+    8 ligne: instr •
+
+    $défaut  réduction par utilisation de la règle 8 (ligne)
+
+
+État 23
+
+    9 ligne: decl •
+
+    $défaut  réduction par utilisation de la règle 9 (ligne)
+
+
+État 24
+
+   38 instr: expr • ';'
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ';'     décalage et aller à l'état 58
+
+
+État 25
+
+    3 lignes: error '\n' •
+
+    $défaut  réduction par utilisation de la règle 3 (lignes)
+
+
+État 26
+
+   49 expr: ID • '(' lexprV ')'
+   66     | ID •
+
+    '('  décalage et aller à l'état 28
+
+    '('      [réduction par utilisation de la règle 66 (expr)]
+    $défaut  réduction par utilisation de la règle 66 (expr)
+
+
+État 27
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+   63     | NEG expr •
+
+    $défaut  réduction par utilisation de la règle 63 (expr)
+
+
+État 28
+
+   49 expr: ID '(' • lexprV ')'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    $défaut  réduction par utilisation de la règle 33 (lexprV)
+
+    lexpr   aller à l'état 59
+    lexprV  aller à l'état 60
+    expr    aller à l'état 61
+
+
+État 29
+
+   39 instr: ID '=' • expr ';'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 62
+
+
+État 30
+
+   41 instr: IF '(' • expr fixif ')' instr ELSE $@3 instr
+   42      | IF '(' • expr fixif ')' instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 63
+
+
+État 31
+
+   45 instr: WHILE '(' • @4 expr $@5 ')' instr
+
+    $défaut  réduction par utilisation de la règle 43 (@4)
+
+    @4  aller à l'état 64
+
+
+État 32
+
+   46 instr: PRINT expr • ';'
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ';'     décalage et aller à l'état 65
+
+
+État 33
+
+   36 instr: RETURN ';' •
+
+    $défaut  réduction par utilisation de la règle 36 (instr)
+
+
+État 34
+
+   37 instr: RETURN expr • ';'
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ';'     décalage et aller à l'état 66
+
+
+État 35
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   55     | '(' expr • ')'
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ')'     décalage et aller à l'état 67
+
+
+État 36
+
+   47 decl: type • ID '=' expr ';'
+   48     | type • ID ';'
+
+    ID  décalage et aller à l'état 68
+
+
+État 37
+
+   22 blocinstr: '{' sdeclV • sinstrV '}'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 9
+    IF      décalage et aller à l'état 10
+    WHILE   décalage et aller à l'état 11
+    PRINT   décalage et aller à l'état 12
+    RETURN  décalage et aller à l'état 13
+    '('     décalage et aller à l'état 15
+    '{'     décalage et aller à l'état 16
+
+    $défaut  réduction par utilisation de la règle 27 (sinstrV)
+
+    blocinstr  aller à l'état 21
+    sinstrV    aller à l'état 69
+    sinstr     aller à l'état 70
+    instr      aller à l'état 71
+    expr       aller à l'état 24
+
+
+État 38
+
+   24 sdeclV: sdecl •
+   26 sdecl: sdecl • decl
+
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+
+    $défaut  réduction par utilisation de la règle 24 (sdeclV)
+
+    type  aller à l'état 36
+    decl  aller à l'état 72
+
+
+État 39
+
+   25 sdecl: decl •
+
+    $défaut  réduction par utilisation de la règle 25 (sdecl)
+
+
+État 40
+
+    0 $accept: lignes $end •
+
+    $défaut  accepter
+
+
+État 41
+
+    1 lignes: lignes error • '\n'
+
+    '\n'  décalage et aller à l'état 73
+
+
+État 42
+
+    5 lignes: lignes '\n' •
+
+    $défaut  réduction par utilisation de la règle 5 (lignes)
+
+
+État 43
+
+    4 lignes: lignes ligne • '\n'
+
+    '\n'  décalage et aller à l'état 74
+
+
+État 44
+
+    2 lignes: ligne error • '\n'
+
+    '\n'  décalage et aller à l'état 75
+
+
+État 45
+
+    6 lignes: ligne '\n' •
+
+    $défaut  réduction par utilisation de la règle 6 (lignes)
+
+
+État 46
+
+   17 deffun: type ID • $@1 '(' largV ')' $@2 blocinstr
+   47 decl: type ID • '=' expr ';'
+   48     | type ID • ';'
+
+    ';'  décalage et aller à l'état 76
+    '='  décalage et aller à l'état 77
+
+    $défaut  réduction par utilisation de la règle 15 ($@1)
+
+    $@1  aller à l'état 78
+
+
+État 47
+
+   61 expr: expr AND • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 79
+
+
+État 48
+
+   56 expr: expr EQ • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 80
+
+
+État 49
+
+   62 expr: expr OR • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 81
+
+
+État 50
+
+   58 expr: expr SUP • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 82
+
+
+État 51
+
+   60 expr: expr SUP_EQ • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 83
+
+
+État 52
+
+   57 expr: expr INF • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 84
+
+
+État 53
+
+   59 expr: expr INF_EQ • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 85
+
+
+État 54
+
+   50 expr: expr '+' • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 86
+
+
+État 55
+
+   51 expr: expr '-' • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 87
+
+
+État 56
+
+   52 expr: expr '*' • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 88
+
+
+État 57
+
+   53 expr: expr '/' • expr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 89
+
+
+État 58
+
+   38 instr: expr ';' •
+
+    $défaut  réduction par utilisation de la règle 38 (instr)
+
+
+État 59
+
+   32 lexpr: lexpr • expr
+   34 lexprV: lexpr •
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    $défaut  réduction par utilisation de la règle 34 (lexprV)
+
+    expr  aller à l'état 90
+
+
+État 60
+
+   49 expr: ID '(' lexprV • ')'
+
+    ')'  décalage et aller à l'état 91
+
+
+État 61
+
+   31 lexpr: expr •
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 31 (lexpr)
+
+
+État 62
+
+   39 instr: ID '=' expr • ';'
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ';'     décalage et aller à l'état 92
+
+
+État 63
+
+   41 instr: IF '(' expr • fixif ')' instr ELSE $@3 instr
+   42      | IF '(' expr • fixif ')' instr
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 11 (fixif)
+
+    fixif  aller à l'état 93
+
+
+État 64
+
+   45 instr: WHILE '(' @4 • expr $@5 ')' instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 94
+
+
+État 65
+
+   46 instr: PRINT expr ';' •
+
+    $défaut  réduction par utilisation de la règle 46 (instr)
+
+
+État 66
+
+   37 instr: RETURN expr ';' •
+
+    $défaut  réduction par utilisation de la règle 37 (instr)
+
+
+État 67
+
+   55 expr: '(' expr ')' •
+
+    $défaut  réduction par utilisation de la règle 55 (expr)
+
+
+État 68
+
+   47 decl: type ID • '=' expr ';'
+   48     | type ID • ';'
+
+    ';'  décalage et aller à l'état 76
+    '='  décalage et aller à l'état 77
+
+
+État 69
+
+   22 blocinstr: '{' sdeclV sinstrV • '}'
+
+    '}'  décalage et aller à l'état 95
+
+
+État 70
+
+   28 sinstrV: sinstr •
+   30 sinstr: sinstr • instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 9
+    IF      décalage et aller à l'état 10
+    WHILE   décalage et aller à l'état 11
+    PRINT   décalage et aller à l'état 12
+    RETURN  décalage et aller à l'état 13
+    '('     décalage et aller à l'état 15
+    '{'     décalage et aller à l'état 16
+
+    $défaut  réduction par utilisation de la règle 28 (sinstrV)
+
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 96
+    expr       aller à l'état 24
+
+
+État 71
+
+   29 sinstr: instr •
+
+    $défaut  réduction par utilisation de la règle 29 (sinstr)
+
+
+État 72
+
+   26 sdecl: sdecl decl •
+
+    $défaut  réduction par utilisation de la règle 26 (sdecl)
+
+
+État 73
+
+    1 lignes: lignes error '\n' •
+
+    $défaut  réduction par utilisation de la règle 1 (lignes)
+
+
+État 74
+
+    4 lignes: lignes ligne '\n' •
+
+    $défaut  réduction par utilisation de la règle 4 (lignes)
+
+
+État 75
+
+    2 lignes: ligne error '\n' •
+
+    $défaut  réduction par utilisation de la règle 2 (lignes)
+
+
+État 76
+
+   48 decl: type ID ';' •
+
+    $défaut  réduction par utilisation de la règle 48 (decl)
+
+
+État 77
+
+   47 decl: type ID '=' • expr ';'
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 26
+    '('     décalage et aller à l'état 15
+
+    expr  aller à l'état 97
+
+
+État 78
+
+   17 deffun: type ID $@1 • '(' largV ')' $@2 blocinstr
+
+    '('  décalage et aller à l'état 98
+
+
+État 79
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   61     | expr AND expr •
+   62     | expr • OR expr
+
+    EQ      décalage et aller à l'état 48
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 61 (expr)
+
+
+État 80
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   56     | expr EQ expr •
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '+'  décalage et aller à l'état 54
+    '-'  décalage et aller à l'état 55
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 56 (expr)
+
+
+État 81
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+   62     | expr OR expr •
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 62 (expr)
+
+
+État 82
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   58     | expr SUP expr •
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '+'  décalage et aller à l'état 54
+    '-'  décalage et aller à l'état 55
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 58 (expr)
+
+
+État 83
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   60     | expr SUP_EQ expr •
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '+'  décalage et aller à l'état 54
+    '-'  décalage et aller à l'état 55
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 60 (expr)
+
+
+État 84
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   57     | expr INF expr •
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '+'  décalage et aller à l'état 54
+    '-'  décalage et aller à l'état 55
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 57 (expr)
+
+
+État 85
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   59     | expr INF_EQ expr •
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '+'  décalage et aller à l'état 54
+    '-'  décalage et aller à l'état 55
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 59 (expr)
+
+
+État 86
+
+   50 expr: expr • '+' expr
+   50     | expr '+' expr •
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 50 (expr)
+
+
+État 87
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   51     | expr '-' expr •
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    '*'  décalage et aller à l'état 56
+    '/'  décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 51 (expr)
+
+
+État 88
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   52     | expr '*' expr •
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    $défaut  réduction par utilisation de la règle 52 (expr)
+
+
+État 89
+
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   53     | expr '/' expr •
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    $défaut  réduction par utilisation de la règle 53 (expr)
+
+
+État 90
+
+   32 lexpr: lexpr expr •
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 32 (lexpr)
+
+
+État 91
+
+   49 expr: ID '(' lexprV ')' •
+
+    $défaut  réduction par utilisation de la règle 49 (expr)
+
+
+État 92
+
+   39 instr: ID '=' expr ';' •
+
+    $défaut  réduction par utilisation de la règle 39 (instr)
+
+
+État 93
+
+   41 instr: IF '(' expr fixif • ')' instr ELSE $@3 instr
+   42      | IF '(' expr fixif • ')' instr
+
+    ')'  décalage et aller à l'état 99
+
+
+État 94
+
+   45 instr: WHILE '(' @4 expr • $@5 ')' instr
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+
+    $défaut  réduction par utilisation de la règle 44 ($@5)
+
+    $@5  aller à l'état 100
+
+
+État 95
+
+   22 blocinstr: '{' sdeclV sinstrV '}' •
+
+    $défaut  réduction par utilisation de la règle 22 (blocinstr)
+
+
+État 96
+
+   30 sinstr: sinstr instr •
+
+    $défaut  réduction par utilisation de la règle 30 (sinstr)
+
+
+État 97
+
+   47 decl: type ID '=' expr • ';'
+   50 expr: expr • '+' expr
+   51     | expr • '-' expr
+   52     | expr • '*' expr
+   53     | expr • '/' expr
+   56     | expr • EQ expr
+   57     | expr • INF expr
+   58     | expr • SUP expr
+   59     | expr • INF_EQ expr
+   60     | expr • SUP_EQ expr
+   61     | expr • AND expr
+   62     | expr • OR expr
+
+    AND     décalage et aller à l'état 47
+    EQ      décalage et aller à l'état 48
+    OR      décalage et aller à l'état 49
+    SUP     décalage et aller à l'état 50
+    SUP_EQ  décalage et aller à l'état 51
+    INF     décalage et aller à l'état 52
+    INF_EQ  décalage et aller à l'état 53
+    '+'     décalage et aller à l'état 54
+    '-'     décalage et aller à l'état 55
+    '*'     décalage et aller à l'état 56
+    '/'     décalage et aller à l'état 57
+    ';'     décalage et aller à l'état 101
+
+
+État 98
+
+   17 deffun: type ID $@1 '(' • largV ')' $@2 blocinstr
+
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+
+    $défaut  réduction par utilisation de la règle 18 (largV)
+
+    type   aller à l'état 102
+    largV  aller à l'état 103
+    largs  aller à l'état 104
+
+
+État 99
+
+   41 instr: IF '(' expr fixif ')' • instr ELSE $@3 instr
+   42      | IF '(' expr fixif ')' • instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 9
+    IF      décalage et aller à l'état 10
+    WHILE   décalage et aller à l'état 11
+    PRINT   décalage et aller à l'état 12
+    RETURN  décalage et aller à l'état 13
+    '('     décalage et aller à l'état 15
+    '{'     décalage et aller à l'état 16
+
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 105
+    expr       aller à l'état 24
+
+
+État 100
+
+   45 instr: WHILE '(' @4 expr $@5 • ')' instr
+
+    ')'  décalage et aller à l'état 106
+
+
+État 101
+
+   47 decl: type ID '=' expr ';' •
+
+    $défaut  réduction par utilisation de la règle 47 (decl)
+
+
+État 102
+
+   20 largs: type • ID
+
+    ID  décalage et aller à l'état 107
+
+
+État 103
+
+   17 deffun: type ID $@1 '(' largV • ')' $@2 blocinstr
+
+    ')'  décalage et aller à l'état 108
+
+
+État 104
+
+   19 largV: largs •
+   21 largs: largs • ',' type ID
+
+    ','  décalage et aller à l'état 109
+
+    $défaut  réduction par utilisation de la règle 19 (largV)
+
+
+État 105
+
+   41 instr: IF '(' expr fixif ')' instr • ELSE $@3 instr
+   42      | IF '(' expr fixif ')' instr •
+
+    ELSE  décalage et aller à l'état 110
+
+    $défaut  réduction par utilisation de la règle 42 (instr)
+
+
+État 106
+
+   45 instr: WHILE '(' @4 expr $@5 ')' • instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 9
+    IF      décalage et aller à l'état 10
+    WHILE   décalage et aller à l'état 11
+    PRINT   décalage et aller à l'état 12
+    RETURN  décalage et aller à l'état 13
+    '('     décalage et aller à l'état 15
+    '{'     décalage et aller à l'état 16
+
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 111
+    expr       aller à l'état 24
+
+
+État 107
+
+   20 largs: type ID •
+
+    $défaut  réduction par utilisation de la règle 20 (largs)
+
+
+État 108
+
+   17 deffun: type ID $@1 '(' largV ')' • $@2 blocinstr
+
+    $défaut  réduction par utilisation de la règle 16 ($@2)
+
+    $@2  aller à l'état 112
+
+
+État 109
+
+   21 largs: largs ',' • type ID
+
+    BOOL_LEX  décalage et aller à l'état 6
+    INT_LEX   décalage et aller à l'état 7
+    VOID_LEX  décalage et aller à l'état 8
+
+    type  aller à l'état 113
+
+
+État 110
+
+   41 instr: IF '(' expr fixif ')' instr ELSE • $@3 instr
+
+    $défaut  réduction par utilisation de la règle 40 ($@3)
+
+    $@3  aller à l'état 114
+
+
+État 111
+
+   45 instr: WHILE '(' @4 expr $@5 ')' instr •
+
+    $défaut  réduction par utilisation de la règle 45 (instr)
+
+
+État 112
+
+   17 deffun: type ID $@1 '(' largV ')' $@2 • blocinstr
+
+    '{'  décalage et aller à l'état 16
+
+    blocinstr  aller à l'état 115
+
+
+État 113
+
+   21 largs: largs ',' type • ID
+
+    ID  décalage et aller à l'état 116
+
+
+État 114
+
+   41 instr: IF '(' expr fixif ')' instr ELSE $@3 • instr
+
+    NUMBER  décalage et aller à l'état 2
+    NEG     décalage et aller à l'état 3
+    TRUE    décalage et aller à l'état 4
+    FALSE   décalage et aller à l'état 5
+    ID      décalage et aller à l'état 9
+    IF      décalage et aller à l'état 10
+    WHILE   décalage et aller à l'état 11
+    PRINT   décalage et aller à l'état 12
+    RETURN  décalage et aller à l'état 13
+    '('     décalage et aller à l'état 15
+    '{'     décalage et aller à l'état 16
+
+    blocinstr  aller à l'état 21
+    instr      aller à l'état 117
+    expr       aller à l'état 24
+
+
+État 115
+
+   17 deffun: type ID $@1 '(' largV ')' $@2 blocinstr •
+
+    $défaut  réduction par utilisation de la règle 17 (deffun)
+
+
+État 116
+
+   21 largs: largs ',' type ID •
+
+    $défaut  réduction par utilisation de la règle 21 (largs)
+
+
+État 117
+
+   41 instr: IF '(' expr fixif ')' instr ELSE $@3 instr •
+
+    $défaut  réduction par utilisation de la règle 41 (instr)

@@ -1,0 +1,3 @@
+void printTrue () { print true; }
+
+printTrue();
